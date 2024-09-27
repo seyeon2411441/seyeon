@@ -1,6 +1,6 @@
 [Project]
-filename=week3-1
-name=week03
+filename=week3-2.dev
+name=week3-2
 Type=1
 Ver=2
 ObjFiles=
@@ -51,7 +51,7 @@ AutoIncBuildNr=0
 SyncProduct=1
 
 [Unit1]
-FileName=..\seyeon715\week3-1.c
+FileName=week3-2.c
 CompileCpp=0
 Folder=
 Compile=1
