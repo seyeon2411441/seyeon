@@ -1,0 +1,28 @@
+# Project: week7-4
+# Makefile created by Embarcadero Dev-C++ 6.3
+
+CPP      = g++.exe -D__DEBUG__
+CC       = gcc.exe -D__DEBUG__
+WINDRES  = windres.exe
+OBJ      = "week\ 7-4.o"
+LINKOBJ  = "week 7-4.o"
+LIBS     = -L"C:/Users/gseye/OneDrive/Desktop/Dev-Cpp/TDM-GCC-64/lib" -L"C:/Users/gseye/OneDrive/Desktop/Dev-Cpp/TDM-GCC-64/x86_64-w64-mingw32/lib" -static-libgcc -g3
+INCS     = -I"C:/Users/gseye/OneDrive/Desktop/Dev-Cpp/TDM-GCC-64/include" -I"C:/Users/gseye/OneDrive/Desktop/Dev-Cpp/TDM-GCC-64/x86_64-w64-mingw32/include" -I"C:/Users/gseye/OneDrive/Desktop/Dev-Cpp/TDM-GCC-64/lib/gcc/x86_64-w64-mingw32/9.2.0/include"
+CXXINCS  = -I"C:/Users/gseye/OneDrive/Desktop/Dev-Cpp/TDM-GCC-64/include" -I"C:/Users/gseye/OneDrive/Desktop/Dev-Cpp/TDM-GCC-64/x86_64-w64-mingw32/include" -I"C:/Users/gseye/OneDrive/Desktop/Dev-Cpp/TDM-GCC-64/lib/gcc/x86_64-w64-mingw32/9.2.0/include" -I"C:/Users/gseye/OneDrive/Desktop/Dev-Cpp/TDM-GCC-64/lib/gcc/x86_64-w64-mingw32/9.2.0/include/c++"
+BIN      = week7-4.exe
+CXXFLAGS = $(CXXINCS) -g3
+CFLAGS   = $(INCS) -g3
+DEL      = C:\Users\gseye\OneDrive\Desktop\Dev-Cpp\DevCpp.exe INTERNAL_DEL
+
+.PHONY: all all-before all-after clean clean-custom
+
+all: all-before $(BIN) all-after
+
+clean: clean-custom
+	${DEL} $(OBJ) $(BIN)
+
+$(BIN): $(OBJ)
+	$(CC) $(LINKOBJ) -o $(BIN) $(LIBS)
+
+"week\ 7-4.o": week\ 7-4.c
+	$(CC) -c "week 7-4.c" -o "week 7-4.o" $(CFLAGS)
