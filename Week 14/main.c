@@ -53,14 +53,14 @@ void opening(void)
 int game_end(void)
 {
     int i;
-    int flag_end = 1;
+    int flag_end = 1;//게임 끝났다고 초기변수 설정
     
     //if all the players are died?
     for (i=0;i<N_PLAYER;i++)
     {
-        if (player_status[i] == PLAYERSTATUS_LIVE)
+        if (player_status[i] == PLAYERSTATUS_LIVE)//플레이어가 살아있다면
         {
-            flag_end = 0;
+            flag_end = 0;//게임 안끝남
             break;
         }
     }
@@ -70,7 +70,7 @@ int game_end(void)
 // ----- EX. 6 : game end ------------
 
 // ----- EX. 4 : player ------------
-void printPlayerPosition(int player)
+void printPlayerPosition(int player)//플레이어 위치 출력
 {
     int i;
     
@@ -78,7 +78,7 @@ void printPlayerPosition(int player)
     {
         printf("|");
         if (player_position[player] == i)
-            printf("%c", player_name[player][0]);
+            printf("%c", player_name[player][0]);//플레이어의 첫 번째 이름 글자 출력
         else
         {
             if (board_getBoardStatus(i) == BOARDSTATUS_NOK)
@@ -96,8 +96,9 @@ void printPlayerStatus(void)
     printf("player status ---\n");
     for (i=0;i<N_PLAYER;i++)
     {
+    	//플레이어마다 각각 이름, 위치,보유 코인, 상태 출력
         printf("%s : pos %i, coin %i, status %s\n", player_name[i], player_position[i], player_coin[i], player_statusString[player_status[i]]);
-        printPlayerPosition(i);
+        printPlayerPosition(i);//각 플레이어의 위치 출력
     }
     printf("-----------------\n");
 }
@@ -111,9 +112,9 @@ void checkDie(void)
     {
         if (board_getBoardStatus(player_position[i]) == BOARDSTATUS_NOK)
         {
+        	//플레이어가 죽었을 때
             printf("%s in pos %i has died!! (coin %i)\n", player_name[i], player_position[i], player_coin[i]);
-            player_status[i] = PLAYERSTATUS_DIE;
-        }
+            player_status[i] = PLAYERSTATUS_DIE;        }
     }
 }
 // ----- EX. 5 : shark ------------
@@ -122,13 +123,13 @@ void checkDie(void)
 int getAlivePlayer(void)
 {
 	int i;
-	int alive_player=0;
+	int cnt=0;
 	for (i=0;i<N_PLAYER;i++){
 		if (player_status[i]==PLAYERSTATUS_END){
-			alive_player++;
+			cnt++;
 		}
 	}
-	return alive_player;
+	return cnt;
 }
 
 int getWinner(void)
@@ -138,7 +139,7 @@ int getWinner(void)
 	int max_coin=-1;
 	
 	for (i=0;i<N_PLAYER;i++){
-		if (player_coin[i]>max_coin){
+		if (player_coin[i]>=max_coin){
 			max_coin=player_coin[i];
 			winner=i;
 		}
@@ -229,12 +230,13 @@ int main(int argc, const char * argv[]) {
         	player_status[turn]=PLAYERSTATUS_END;
 		}
 		
-		printf("Die result : %d, %s moved to %d\n", dieResult, player_name[turn],player_position[turn])
+		printf("Die result : %d, %s moved to %d\n", dieResult, player_name[turn],player_position[turn]);
         //step 2-4. coin
+        coinResult=board_getBoard;
     
         
         //step 2-5. end process
-    
+        turn=(turn+1)%N_PLAYER;
 // ----- EX. 6 : game end ------------
     } while(game_end() == 0);
     

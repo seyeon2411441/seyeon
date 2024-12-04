@@ -46,8 +46,8 @@ int board_initBoard(void)
     //variable initialization
     for (i=0;i<N_BOARD;i++)
     {
-        board_status[i] = BOARDSTATUS_OK;
-        board_coin[i] = 0;
+        board_status[i] = BOARDSTATUS_OK;//보드의 모든 칸 0으로 초기화
+        board_coin[i] = 0;//보드의 각 칸에 코인 0으로 초기화
     }
     
 // ----- EX. 5 : shark ------------
@@ -56,8 +56,16 @@ int board_initBoard(void)
 
     //coin allocation
 
-    for(i=0;i<N_BOARD;i++){
-    	board_coin[i]=rand()%(MAX_COIN+1);// coin random allocation 0 to MAX_COIN
+    for(i=0;i<N_COINPOS;i++){//COINPOS=모든 칸의 총 코인 개수
+    	int coinboard;
+    	while(1){
+    		coinboard=rand()%N_BOARD;//보드의 위치 랜덤으로 선택
+    		if (board_coin[coinboard]==0){//그 칸에 코인이 없으면
+    			board_coin[coinboard]=rand()%(MAX_COIN+1);//랜덤코으로 인 수 배치
+			    break;
+			}
+		}
+    	// coin random allocation 0 to MAX_COIN
 	}
 
     return N_COINPOS;
@@ -81,10 +89,7 @@ int board_stepShark(void) //shark go order
 // ----- EX. 3 : board ------------
 int board_getBoardStatus(int pos)
 {
-	int i;
-	for (i=0;i<sharkPos;i++){
-		board_status[i]=BOARDSTATUS_NOK;
-	}
+
     return board_status[pos];
 }
 
