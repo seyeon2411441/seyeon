@@ -78,16 +78,16 @@ int board_stepShark(void) //상어 전진 명령
 	int i;
 	int sharkPos;
 	sharkPos=rand()%(MAX_SHARKSTEP+1);
-	shark_position+=sharkPos;
+	shark_position+=sharkPos;//랜덤 수 만큼 상어 이동 
 	
 	if(shark_position>=N_BOARD){
 		shark_position=N_BOARD-1;
-	}
+	}//마지막칸에 도달하면 상어의 위치는 마지막 칸으로 설정
 	
 	for(i=0;i<shark_position;i++){
 		board_status[i]=BOARDSTATUS_NOK;
-	}
-	return sharkPos;
+	}// 상어 있는 칸은 NOK로 설정
+	return sharkPos;//상어가 이동한 칸 수 반환
 	
 	
 }
@@ -98,13 +98,16 @@ int board_stepShark(void) //상어 전진 명령
 int board_getBoardStatus(int pos)
 {
 
-    return board_status[pos];
+    return board_status[pos];//위치에 해당하는 보드 상태 반환
 }
 
 int board_getBoardCoin(int pos)
 {
-    int coin = board_coin[pos];
-    board_coin[pos] = 0;
-    return coin;
+	
+    int coin = board_coin[pos];//현재 위치에서 코인의 양 저장
+    board_coin[pos] = 0;//해당 위치 코인 0으로 설정
+    //해당 칸의 코인을 다 가져감
+    
+    return coin;//가져간 코인 수 반환 
 }
 // ----- EX. 3 : board ------------

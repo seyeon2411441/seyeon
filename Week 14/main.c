@@ -210,9 +210,9 @@ int main(int argc, const char * argv[]) {
         printf("%s turn!! ", player_name[turn]);
         printf("Press any key to roll a die!\n");
         scanf("%d", &dum);
-        fflush(stdin);
+        fflush(stdin);//주사위 굴림
 // ----- EX. 4 : player ------------
-        dieResult = rolldie();
+        dieResult = rolldie();//함수호출해서 dieResult에 저장
         
         
         //step 2-3. moving
@@ -227,23 +227,23 @@ int main(int argc, const char * argv[]) {
 		
 		printf("Die result : %d, %s moved to %d\n", dieResult, player_name[turn],player_position[turn]);
         //step 2-4. coin
-        coinResult=board_getBoardCoin(player_position[turn]);
-        player_coin[turn]+=coinResult;
+        coinResult=board_getBoardCoin(player_position[turn]);//현재 위치의 코인을 줍는 함수 호출
+        player_coin[turn]+=coinResult;//player_coin에 습득한 coin 추가 
         if (coinResult>0){
         	
 		printf("Congratulations. %s collects %d coins\n ",player_name,coinResult);
-	    }
+	    }//습득한 코인이 있으면 출력
 
     
         
         //step 2-5. end process
-        turn=(turn+1)%N_PLAYER;
+        turn=(turn+1)%N_PLAYER;//다음 플레이어차례 
         
         
-        if (turn%N_PLAYER==0){
+        if (turn==0){
         	int sharkPos=board_stepShark();
         	printf("Shark moved to %d\n", sharkPos);
-        	
+        	//상어 위치 출력
         	checkDie();
 		}
 		
