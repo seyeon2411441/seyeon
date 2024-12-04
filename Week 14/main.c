@@ -122,19 +122,19 @@ void checkDie(void)
 int getAlivePlayer(void)
 {
 	int i;
-	int cnt=0;
+	int alive_player=0;
 	for (i=0;i<N_PLAYER;i++){
 		if (player_status[i]==PLAYERSTATUS_END){
-			cnt++;
+			alive_player++;
 		}
 	}
-	return cnt;
+	return alive_player;
 }
 
 int getWinner(void)
 {
 	int i;
-	int winner=0;
+	int winner;
 	int max_coin=-1;
 	
 	for (i=0;i<N_PLAYER;i++){
