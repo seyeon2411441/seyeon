@@ -65,23 +65,31 @@ int board_initBoard(void)
 			    break;
 			}
 		}
-    	// coin random allocation 0 to MAX_COIN
+    	// 0부터 COINMAX까지 랜덤 배치
 	}
 
     return N_COINPOS;
 }
 // ----- EX. 3 : board ------------
 
-
 // ----- EX. 5 : shark ------------
-int board_stepShark(void) //shark go order 
+int board_stepShark(void) //상어 전진 명령
 {
-	int sharkPos=SHARK_INITPOS;
-	sharkPos+=rand()%(MAX_SHARKSTEP+1);
-	printf("Shark moved to %d",sharkPos); 
+	int i;
+	int sharkPos;
+	sharkPos=rand()%(MAX_SHARKSTEP+1);
+	shark_position+=sharkPos;
 	
-
+	if(shark_position>=N_BOARD){
+		shark_position=N_BOARD-1;
+	}
+	
+	for(i=0;i<shark_position;i++){
+		board_status[i]=BOARDSTATUS_NOK;
+	}
 	return sharkPos;
+	
+	
 }
 // ----- EX. 5 : shark ------------
 

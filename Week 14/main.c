@@ -72,9 +72,9 @@ int game_end(void)
 // ----- EX. 4 : player ------------
 void printPlayerPosition(int player)//플레이어 위치 출력
 {
-    int i;
     
-    for (i=0;i<N_BOARD;i++)
+    
+    for (int i=0;i<N_BOARD;i++)
     {
         printf("|");
         if (player_position[player] == i)
@@ -114,7 +114,8 @@ void checkDie(void)
         {
         	//플레이어가 죽었을 때
             printf("%s in pos %i has died!! (coin %i)\n", player_name[i], player_position[i], player_coin[i]);
-            player_status[i] = PLAYERSTATUS_DIE;        }
+            player_status[i] = PLAYERSTATUS_DIE;        
+		}
     }
 }
 // ----- EX. 5 : shark ------------
@@ -123,7 +124,7 @@ void checkDie(void)
 int getAlivePlayer(void)
 {
 	int i;
-	int cnt=0;
+	int cnt=0;//살아있는 플레이어에 대한 변수 초기화 
 	for (i=0;i<N_PLAYER;i++){
 		if (player_status[i]==PLAYERSTATUS_END){
 			cnt++;
@@ -141,7 +142,7 @@ int getWinner(void)
 	for (i=0;i<N_PLAYER;i++){
 		if (player_coin[i]>=max_coin){
 			max_coin=player_coin[i];
-			winner=i;
+			winner=i;//승리자를 해당 i의 인덱스로 설정 
 		}
 	}
 	
@@ -160,7 +161,7 @@ int main(int argc, const char * argv[]) {
     int pos=0;
 
 // ----- EX. 1 : Preparation------------
-    srand(time(NULL));
+    srand(time(NULL));//난수생성기 초기화
     opening();
 // ----- EX. 1 : Preparation------------
 
@@ -172,6 +173,7 @@ int main(int argc, const char * argv[]) {
 // ----- EX. 4 : player ------------
     //step1-2 : initialize player
     for (i=0;i<N_PLAYER;i++)
+    //플레이어 이름 설정
     {
         player_position[i] = 0;
         player_coin[i] = 0;
@@ -190,7 +192,7 @@ int main(int argc, const char * argv[]) {
 // ----- EX. 4 : player ------------
         if (player_status[turn] != PLAYERSTATUS_LIVE)
         {
-            turn = (turn + 1)%N_PLAYER;
+            turn = (turn + 1)%N_PLAYER;//현재 턴의 플레이어가 이미 죽었으면 다음 플레이어 순서로 넘어감
             continue;
         }
 // ----- EX. 4 : player ------------
@@ -198,17 +200,9 @@ int main(int argc, const char * argv[]) {
         //step 2-1. status printing
 // ----- EX. 3 : board ------------
         board_printBoardStatus();
-        dieResult=rolldie();
-        pos=dieResult;
-        coinResult=board_getBoardCoin(pos);
 // ----- EX. 3 : board ------------
 // ----- EX. 4 : player ------------
         printPlayerStatus();
-        
-        if (player_status[turn] != PLAYERSTATUS_LIVE){
-        	turn = (turn+1)%N_PLAYER;
-        	continue;
-		}
 // ----- EX. 4 : player ------------
 
         //step 2-2. rolling die
@@ -222,21 +216,39 @@ int main(int argc, const char * argv[]) {
         
         
         //step 2-3. moving
-        player_position[turn]+=dieResult;
         
-        if (player_position[turn]>N_BOARD-1){
+        if (player_position[turn]>N_BOARD-1){//플레이어가 20에 도달하면 그냥 20, end로 상태변경
         	
         	player_position[turn]=N_BOARD-1;
         	player_status[turn]=PLAYERSTATUS_END;
+		}else {
+			player_position[turn]+=dieResult;//plqyer_position값에 주사위 결과 더하기
 		}
 		
 		printf("Die result : %d, %s moved to %d\n", dieResult, player_name[turn],player_position[turn]);
         //step 2-4. coin
-        coinResult=board_getBoard;
+        coinResult=board_getBoardCoin(player_position[turn]);
+        player_coin[turn]+=coinResult;
+        if (coinResult>0){
+        	
+		printf("Congratulations. %s collects %d coins\n ",player_name,coinResult);
+	    }
+
     
         
         //step 2-5. end process
         turn=(turn+1)%N_PLAYER;
+        
+        
+        if (turn%N_PLAYER==0){
+        	int sharkPos=board_stepShark();
+        	printf("Shark moved to %d\n", sharkPos);
+        	
+        	checkDie();
+		}
+		
+		
+		
 // ----- EX. 6 : game end ------------
     } while(game_end() == 0);
     
