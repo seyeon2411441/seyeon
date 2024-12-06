@@ -29,6 +29,7 @@ char player_name[N_PLAYER][MAX_CHARNAME];
 int player_coin[N_PLAYER];
 int player_status[N_PLAYER]; //0 - live, 1 - die, 2 - end
 char player_statusString[3][MAX_CHARNAME] = {"LIVE", "DIE", "END"};
+int player_arrival[N_PLAYER];//코인이 동일할 때 먼저 도착하는 사람이 winner임을 구하기위한한 내가 만든 배열
 // ----- EX. 4 : player ------------
 
 // ----- EX. 3 : board ------------
@@ -90,6 +91,16 @@ void printPlayerPosition(int player)//플레이어 위치 출력
     printf("|\n");
 }
 
+void printPlayerArrival(int player){
+	//도착하는 순서에 따라 player들이 1,2,3 으로 배치됨 
+	int order=1;
+	
+	if(player_position[N_PLAYER]==20){
+		player_arrival[N_PLAYER]=order++;
+	}
+		
+}
+
 void printPlayerStatus(void)
 {
     int i;
@@ -114,7 +125,7 @@ void checkDie(void)
         {
         	//플레이어가 죽었을 때
             printf("%s in pos %i has died!! (coin %i)\n", player_name[i], player_position[i], player_coin[i]);
-            player_status[i] = PLAYERSTATUS_DIE;        
+            player_status[i] = PLAYERSTATUS_DIE;//        
 		}
     }
 }
@@ -138,11 +149,17 @@ int getWinner(void)
 	int i;
 	int winner;
 	int max_coin=-1;
-	
+	int min_arrival=0;
 	for (i=0;i<N_PLAYER;i++){
-		if (player_coin[i]>=max_coin){
+		if (player_coin[i]>max_coin){
 			max_coin=player_coin[i];
-			winner=i;//승리자를 해당 i의 인덱스로 설정 
+			winner=i;//승리자를 해당 i의 인덱스로 설정
+		}
+		//코인의 개수가 같을 때, 먼저 도착한 사람이 승리자가 됨
+		else if(player_coin[i]==max_coin){
+			if (player_arrival[i]<min_arrival){
+				winner=i;
+			}
 		}
 	}
 	
@@ -150,6 +167,8 @@ int getWinner(void)
 	
 	
 }
+
+
 // ----- EX. 6 : game end ------------
 
 
@@ -192,9 +211,10 @@ int main(int argc, const char * argv[]) {
 // ----- EX. 4 : player ------------
         if (player_status[turn] != PLAYERSTATUS_LIVE)
         {
-            turn = (turn + 1)%N_PLAYER;//현재 턴의 플레이어가 이미 죽었으면 다음 플레이어 순서로 넘어감
+            turn = (turn + 1)%N_PLAYER;//현재 턴의 플레이어가 LIVE상태가 아니면  다음 플레이어 순서로 넘어감
             continue;
         }
+        
 // ----- EX. 4 : player ------------
         
         //step 2-1. status printing
@@ -217,16 +237,15 @@ int main(int argc, const char * argv[]) {
         
         //step 2-3. moving
         
-        if (player_position[turn]>N_BOARD-1){//플레이어가 20에 도달하면 그냥 20, end로 상태변경
-        	
-        	player_position[turn]=N_BOARD-1;
+        if (player_position[turn]+dieResult>N_BOARD-1){
+        	player_position[turn]=20;
         	player_status[turn]=PLAYERSTATUS_END;
-		}else {
+        	printf("Die result: %d, %s moved to 20\n", dieResult, player_name[turn]);
+		    }  // 플레이어의 위치에서 주사위결과를 더했을 때, 위치가 20이상이면 위치는 20으로 설정, 상태 END로 변경
+		else {
 			player_position[turn]+=dieResult;//plqyer_position값에 주사위 결과 더하기
-		}
-		
-		printf("Die result : %d, %s moved to %d\n", dieResult, player_name[turn],player_position[turn]);
-        //step 2-4. coin
+		    printf("Die result : %d, %s moved to %d\n", dieResult, player_name[turn],player_position[turn]);
+	        }
         coinResult=board_getBoardCoin(player_position[turn]);//현재 위치의 코인을 줍는 함수 호출
         player_coin[turn]+=coinResult;//player_coin에 습득한 coin 추가 
         if (coinResult>0){
@@ -241,8 +260,8 @@ int main(int argc, const char * argv[]) {
         
         
         if (turn==0){
-        	int sharkPos=board_stepShark();
-        	printf("Shark moved to %d\n", sharkPos);
+        	int shark_position=board_stepShark();
+        	printf("Shark moved to %d\n", shark_position);
         	//상어 위치 출력
         	checkDie();
 		}
@@ -260,4 +279,5 @@ int main(int argc, const char * argv[]) {
 // ----- EX. 2 : structuring ------------
 
     return 0;
+    
 }

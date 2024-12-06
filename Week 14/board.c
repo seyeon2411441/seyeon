@@ -51,7 +51,7 @@ int board_initBoard(void)
     }
     
 // ----- EX. 5 : shark ------------
-    shark_position = SHARK_INITPOS;
+
 // ----- EX. 5 : shark ------------
 
     //coin allocation
@@ -80,14 +80,15 @@ int board_stepShark(void) //상어 전진 명령
 	sharkPos=rand()%(MAX_SHARKSTEP+1);
 	shark_position+=sharkPos;//랜덤 수 만큼 상어 이동 
 	
-	if(shark_position>=N_BOARD){
+	if(shark_position>=N_BOARD-1){
 		shark_position=N_BOARD-1;
 	}//마지막칸에 도달하면 상어의 위치는 마지막 칸으로 설정
 	
-	for(i=0;i<shark_position;i++){
+	for(i=0;i<
+	shark_position;i++){
 		board_status[i]=BOARDSTATUS_NOK;
-	}// 상어 있는 칸은 NOK로 설정
-	return sharkPos;//상어가 이동한 칸 수 반환
+	}// 상어 지나간 칸들은 NOK 설정
+	return shark_position;//상어가 이동한 칸 수 반환
 	
 	
 }
